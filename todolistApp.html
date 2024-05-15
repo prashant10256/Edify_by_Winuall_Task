@@ -1,0 +1,103 @@
+<!-- TODO # Create a simple to-do list application using HTML, CSS, and JavaScript.
+     Users should be able to add tasks, mark them as complete, and delete them. -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-Do List Application</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+      }
+      input[type="text"] {
+        width: 70%;
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+      button {
+        padding: 10px 20px;
+        border: none;
+        background-color: #4caf50;
+        color: white;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #45a049;
+      }
+      .task {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #fff;
+      }
+      .task.completed {
+        text-decoration: line-through;
+      }
+      .task .delete-btn {
+        background-color: #f44336;
+      }
+      .task .delete-btn:hover {
+        background-color: #d32f2f;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>To-Do List Application</h2>
+      <input type="text" id="taskInput" placeholder="Add new task" />
+      <button onclick="addTask()">Add Task</button>
+      <div id="taskList"></div>
+    </div>
+
+    <script>
+      function addTask() {
+        var taskInput = document.getElementById("taskInput");
+        var taskList = document.getElementById("taskList");
+        var taskText = taskInput.value.trim();
+
+        if (taskText === "") {
+          alert("Please enter a task!");
+          return;
+        }
+
+        var taskItem = document.createElement("div");
+        taskItem.className = "task";
+        taskItem.innerHTML = `
+                <span>${taskText}</span>
+                <button class="delete-btn" onclick="deleteTask(this)">Delete</button>
+                <button class="complete-btn" onclick="toggleComplete(this)">✔</button>
+            `;
+
+        taskList.appendChild(taskItem);
+        taskInput.value = "";
+      }
+
+      function deleteTask(btn) {
+        var taskItem = btn.parentNode;
+        var taskList = taskItem.parentNode;
+        taskList.removeChild(taskItem);
+      }
+
+      function toggleComplete(btn) {
+        var taskItem = btn.parentNode;
+        taskItem.classList.toggle("completed");
+      }
+    </script>
+  </body>
+</html>

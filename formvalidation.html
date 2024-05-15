@@ -1,0 +1,112 @@
+<!-- Create a dynamic form validation library in JavaScript that can handle various types of inputs,
+     (text, email, password, etc.) and validation rules. -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form id="myForm">
+      <h3>Users Form</h3>
+      User Name:
+      <input type="text" data-type="text" placeholder="Enter your name" />
+      <br />
+      <br />
+      User Email:
+      <input type="email" data-type="email" placeholder="Enter your email" />
+      <br />
+      <br />
+      Enter Password:
+      <input
+        type="password"
+        data-type="password"
+        placeholder="Enter your password"
+      />
+      <br />
+      <br />
+      <button type="submit">Submit</button>
+    </form>
+    <script>
+      // Define validation rules for each input type
+      const validationRules = {
+        text: /^[a-zA-Z\s]+$/,
+        email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+        password: /^.{6,}$/,
+      };
+
+      // Define error messages for each validation rule
+      const errorMessages = {
+        text: "Only letters and spaces are allowed.",
+        email: "Please enter a valid email address.",
+        password: "Password must be at least 6 characters long.",
+      };
+
+      // Function to validate input based on its type
+      function validateInput(input) {
+        const type = input.getAttribute("data-type");
+        const value = input.value.trim();
+
+        if (!value.match(validationRules[type])) {
+          return errorMessages[type];
+        }
+
+        return "";
+      }
+
+      // Function to display validation error message
+      function showError(input, message) {
+        const errorElement = document.createElement("div");
+        errorElement.className = "error-message";
+        errorElement.textContent = message;
+
+        const parent = input.parentElement;
+        parent.appendChild(errorElement);
+      }
+
+      // Function to remove validation error message
+      function removeError(input) {
+        const parent = input.parentElement;
+        const errorElement = parent.querySelector(".error-message");
+        if (errorElement) {
+          parent.removeChild(errorElement);
+        }
+      }
+
+      // Function to validate form
+      function validateForm(form) {
+        let isValid = true;
+
+        // Reset validation errors
+        form
+          .querySelectorAll(".error-message")
+          .forEach((error) => error.remove());
+
+        // Validate each input
+        form.querySelectorAll("input").forEach((input) => {
+          const errorMessage = validateInput(input);
+          if (errorMessage) {
+            showError(input, errorMessage);
+            isValid = false;
+          }
+        });
+
+        return isValid;
+      }
+
+      // Example usage:
+      const form = document.getElementById("myForm");
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        if (validateForm(form)) {
+          console.log("Form is valid. Submitting...");
+          // Your form submission logic here
+        } else {
+          console.log("Form validation failed.");
+        }
+      });
+    </script>
+  </body>
+</html>
